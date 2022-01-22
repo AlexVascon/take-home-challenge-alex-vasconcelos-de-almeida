@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './App.css';
-import { Page } from './components/Page';
+import { Button } from './components/Button'
+import { Page } from './components/Page'
 import { useItem } from './service/hero.service'
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
     return (
         <div className="App">
             <div className="container">
+                <Button>Home</Button>
                 {item ? <Page item={item} selectActive={setActiveUrl}/> : <div>spinner</div>}
             </div>
         </div>

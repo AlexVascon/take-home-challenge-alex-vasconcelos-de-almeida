@@ -70,3 +70,10 @@ export const useItem = (url: string) => {
 
     return item
 }
+
+export const fetchNestedObject = async (url: string) => {
+    const res = await fetch(url, {
+        method: 'GET'
+    })
+    return await res.json()
+}
