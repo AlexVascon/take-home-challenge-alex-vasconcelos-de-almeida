@@ -1,10 +1,12 @@
 import React, { FC, useEffect, useState } from 'react'
-import { House } from '../service/hero.service'
+import { House, sortAlphabetically } from '../service/hero.service'
 import { PageProps } from './Page'
 import RefList from './RefList'
 
 export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive }) => {
     const [currentLord, setCurrentLord] = useState<string>('')
+    const [swornMembers, setSwornMembers] = useState<string[]>([])
+    const [cadetBranches, setCadetBranches] = useState<string[]>([])
     useEffect(() => {
         const fetchCurrentLord = async (url: string) => {
             const res = await fetch(url, {
@@ -16,6 +18,22 @@ export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive 
         fetchCurrentLord(house.currentLord)
     }, [])
 
+    useEffect(() => {
+        const asyncFunction = async () => {
+            const result = await sortAlphabetically(house.swornMembers)
+            if(result) setSwornMembers(result)
+        }
+       asyncFunction()
+    },[house.swornMembers])
+
+    useEffect(() => {
+        const asyncFunction = async () => {
+            const result = await sortAlphabetically(house.cadetBranches)
+            if(result) setCadetBranches(result)
+        }
+       asyncFunction()
+    },[house.cadetBranches])
+
     return <div>
         <div className="row">
             <h1>House: {house.name}</h1>
@@ -26,8 +44,8 @@ export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive 
             <p>It was founded in {house.founded} by {house.founder}.</p>
         </div>
 
-        <RefList list={house.swornMembers} title="Sworn members" onClickItem={selectActive}/>
-        <RefList list={house.cadetBranches} title="Cadet branches" onClickItem={selectActive} />
+        <RefList list={swornMembers} title="Sworn members" onClickItem={selectActive}/>
+        <RefList list={cadetBranches} title="Cadet branches" onClickItem={selectActive} />
     </div>
 }
 
