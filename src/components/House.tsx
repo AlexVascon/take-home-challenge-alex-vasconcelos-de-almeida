@@ -9,6 +9,8 @@ export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive 
     const [founder, setFounder] = useState<string>('')
     const [swornMembers, setSwornMembers] = useState<string[]>([])
     const [cadetBranches, setCadetBranches] = useState<string[]>([])
+    const [loadingMembers, setLoadingMembers] = useState<boolean>(true)
+    const [loadingCadets, setLoadingCadets] = useState<boolean>(true)
   
     useEffect(() => {
         const fetchCurrentLord = async () => {
@@ -30,6 +32,7 @@ export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive 
         const asyncFunction = async () => {
             const result = await sortAlphabetically(house.swornMembers)
             if(result) setSwornMembers(result)
+            setLoadingMembers(false)
         }
        asyncFunction()
     },[house.swornMembers])
@@ -38,6 +41,7 @@ export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive 
         const asyncFunction = async () => {
             const result = await sortAlphabetically(house.cadetBranches)
             if(result) setCadetBranches(result)
+            setLoadingCadets(false)
         }
        asyncFunction()
     },[house.cadetBranches])
@@ -49,11 +53,15 @@ export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive 
 
         <div className="row">
             <p>The house, {house.name} {currentLord && 'is ruled by ' + currentLord} {house.heir && ',and will later be rules by' + house.heir}.</p>
-            <p>It was founded in {house.founded} {house.founder && 'by' + founder}.</p>
+            <p>{house.founded && 'It was founded in ' + house.founded} {house.founder && 'by ' + founder}.</p>
         </div>
 
         <RefList list={swornMembers} title="Sworn members" onClickItem={selectActive}/>
+        {swornMembers.length === 0 && loadingMembers && <CircularProgress />}
+        {swornMembers.length === 0 && !loadingMembers && <p>No member data</p>}
         <RefList list={cadetBranches} title="Cadet branches" onClickItem={selectActive} />
+        {cadetBranches.length === 0 && loadingCadets && <CircularProgress />}
+        {cadetBranches.length === 0 && !loadingCadets && <p>No branches data</p>}
     </div>
 }
 
