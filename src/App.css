@@ -37,14 +37,19 @@
   }
 }
 
+.list-group-item:nth-of-type(odd) {
+  background-color: #ccc;
+}
+
 .button {
-  padding: 0.5rem;
+  padding: 0.3rem 0.5rem;
   background-color: #61dafb;
   border: none;
   border-radius: 0.5rem;
   border-collapse: separate;
   float: left;
   margin-top: 0.5rem;
+  margin-right: 80%; /* push text down */
 }
 
 .toggle {
