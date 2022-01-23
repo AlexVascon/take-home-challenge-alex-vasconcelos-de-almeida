@@ -37,7 +37,8 @@ export const BookPage: FC<PageProps & {book: Book}> = ({ book, selectActive }) =
         <div className="row">
             <h1>Book: {book.name}</h1>
         </div>
-        <button onClick={() => toggleMaleOnly()}>male</button>
+        <p>(toggle all / filter male only)</p>
+        <button onClick={() => toggleMaleOnly()}>{toggle ? 'all' : 'male'}</button>
         {characters && <RefList list={[...characters]} title="Characters" onClickItem={selectActive} />}
         {characters.length === 0 && <CircularProgress />}
     </div>
