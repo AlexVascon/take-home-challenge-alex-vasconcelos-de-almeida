@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { House, sortAlphabetically, urlObject } from '../service/hero.service'
+import { House, sortedList, urlObject } from '../service/hero.service'
 import { PageProps } from './Page'
 import RefList from './RefList'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -29,21 +29,27 @@ export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive 
     }, [house.founder])
 
     useEffect(() => {
-        const asyncFunction = async () => {
-            const result = await sortAlphabetically(house.swornMembers)
-            if(result) setSwornMembers(result)
+        const fetchSwornMembers = async () => {
+            const result = await sortedList(house.swornMembers)
+            if(result) {
+                const resultUrls = result.map(obj => obj.url)
+                setSwornMembers(resultUrls)
+            } 
             setLoadingMembers(false)
         }
-       asyncFunction()
+        fetchSwornMembers()
     },[house.swornMembers])
 
     useEffect(() => {
-        const asyncFunction = async () => {
-            const result = await sortAlphabetically(house.cadetBranches)
-            if(result) setCadetBranches(result)
+        const fetchCadetBranches = async () => {
+            const result = await sortedList(house.cadetBranches)
+            if(result) {
+                const resultUrls = result.map(obj => obj.url)
+                setCadetBranches(resultUrls)
+            } 
             setLoadingCadets(false)
         }
-       asyncFunction()
+        fetchCadetBranches()
     },[house.cadetBranches])
 
     return <div>

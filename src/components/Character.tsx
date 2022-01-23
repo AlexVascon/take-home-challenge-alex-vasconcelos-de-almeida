@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Book, Character, urlObject } from '../service/hero.service'
+import { Character, urlObject } from '../service/hero.service'
 import { PageProps } from './Page'
 import RefList from './RefList'
 
@@ -8,19 +8,19 @@ export const CharacterPage: FC<PageProps & {character: Character}> = ({ characte
     const [spouse, setSpouse] = useState<string>('')
    
     useEffect(() => {
-        const asyncFunction = async () => {
+        const fetchAllegiance = async () => {
             const allegianceName = await urlObject(character.allegiances[0])
             if(allegianceName) setAllegiance(allegianceName)
         }
-        asyncFunction()
+        fetchAllegiance()
     }, [character.allegiances])
 
     useEffect(() => {
-        const asyncFunction = async () => {
+        const fetchSpouse = async () => {
             const spouseName = await urlObject(character.spouse)
             if(spouseName) setSpouse(spouseName)
         }
-        asyncFunction()
+        fetchSpouse()
     }, [character.spouse])
 
     return <div>

@@ -44,4 +44,15 @@
   border-radius: 0.5rem;
   border-collapse: separate;
   float: left;
+  margin-top: 0.5rem;
+}
+
+.toggle {
+  padding: 0.5rem;
+  background-color: darkcyan;
+  border: none;
+  border-radius: 0.5rem;
+  border-collapse: separate;
+  color: white;
+  width: 4rem;
 }

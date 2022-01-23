@@ -75,7 +75,7 @@ export const urlObject = async (url: string) => {
     const res = await fetch(url, {
         method: 'GET'
     })
-    const object = await res.json()
+    const object = await res.json() // house or character
     return object.name
 }
 
@@ -95,20 +95,4 @@ export const sortedList = async (list: string[]) => {
     return filteredNull
 }
 
-export const sortAlphabetically = async (list: string[]) => {
-    const urlObjects = await Promise.all(
-        list.map(async url => {
-            const res = await fetch(url, {
-                method: 'GET'
-            })
-         return await res.json()
-         })
-    )
-    const filteredNull = urlObjects.filter(obj => obj.name !== '')
-    filteredNull.sort((a,b) => {
-        return a.name.localeCompare(b.name)
-    })
-    const urlsInAlphabeticalOrder = filteredNull.map(obj => obj.url)
-    return urlsInAlphabeticalOrder
-}
 
