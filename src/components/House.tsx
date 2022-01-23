@@ -7,6 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive }) => {
     const [currentLord, setCurrentLord] = useState<string>('')
     const [founder, setFounder] = useState<string>('')
+    const [houseHeir, setHouseHeir] = useState<string>('')
     const [swornMembers, setSwornMembers] = useState<string[]>([])
     const [cadetBranches, setCadetBranches] = useState<string[]>([])
     const [loadingMembers, setLoadingMembers] = useState<boolean>(true)
@@ -27,6 +28,14 @@ export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive 
         }
         fetchFounder()
     }, [house.founder])
+
+    useEffect(() => {
+        const fetchHouseHeir = async () => {
+            const houseHeirName = await urlObject(house.heir)
+            if(houseHeirName) setHouseHeir(houseHeirName)
+        }
+        fetchHouseHeir()
+    }, [house.heir])
 
     useEffect(() => {
         const fetchSwornMembers = async () => {
@@ -58,7 +67,7 @@ export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive 
         </div>
 
         <div className="row">
-            <p>The house, {house.name} {currentLord && 'is ruled by ' + currentLord} {house.heir && ',and will later be rules by' + house.heir}.</p>
+            <p>The house, {house.name} {currentLord && 'is ruled by ' + currentLord} {house.heir && ',and will later be rules by ' + houseHeir}.</p>
             <p>{house.founded && 'It was founded in ' + house.founded} {house.founder && 'by ' + founder}.</p>
         </div>
 
