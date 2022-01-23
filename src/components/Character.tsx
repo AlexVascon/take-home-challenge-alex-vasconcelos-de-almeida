@@ -1,35 +1,27 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Book, Character } from '../service/hero.service'
+import { Book, Character, urlObject } from '../service/hero.service'
 import { PageProps } from './Page'
 import RefList from './RefList'
 
 export const CharacterPage: FC<PageProps & {character: Character}> = ({ character, selectActive, }) => {
     const [allegiance, setAllegiance] = useState<string>('')
-    const [allegianceURL, setAllegianceURL] = useState<string>(character.allegiances[0])
     const [spouse, setSpouse] = useState<string>('')
-    const [spouseURL, setSpouseURL] = useState<string>(character.spouse)
    
     useEffect(() => {
-        const fetchAllegiances = async (url: string) => {
-            const res = await fetch(url, {
-                method: 'GET'
-            })
-            const result = await res.json()
-            setAllegiance(result.name)
+        const asyncFunction = async () => {
+            const allegianceName = await urlObject(character.allegiances[0])
+            if(allegianceName) setAllegiance(allegianceName)
         }
-        if(allegianceURL) fetchAllegiances(allegianceURL) 
-    }, [allegianceURL])
+        asyncFunction()
+    }, [character.allegiances])
 
     useEffect(() => {
-        const fetchSpouse = async (url: string) => {
-            const res = await fetch(url, {
-                method: 'GET'
-            })
-            const result = await res.json()
-            setSpouse(result.name)
+        const asyncFunction = async () => {
+            const spouseName = await urlObject(character.spouse)
+            if(spouseName) setSpouse(spouseName)
         }
-        fetchSpouse(spouseURL)
-    }, [spouseURL])
+        asyncFunction()
+    }, [character.spouse])
 
     return <div>
         <div className="row">
@@ -37,7 +29,7 @@ export const CharacterPage: FC<PageProps & {character: Character}> = ({ characte
         </div>
 
         <div className="row">
-            <p>{character.name} {character.aliases[0] && 'the ' + character.aliases[0]} {character.titles[0] && ', the ' + character.titles[0]} of {allegiance && allegiance}</p>
+            <p>{character.name} {character.aliases[0] && ', the ' + character.aliases[0]} {character.titles[0] && ', the ' + character.titles[0]} {allegiance && 'of ' + allegiance}</p>
             {character.spouse ? <p>{character.name} is married to {spouse && spouse}.</p> : ''}
         </div>
 

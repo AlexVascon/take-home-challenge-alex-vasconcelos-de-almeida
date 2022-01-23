@@ -71,6 +71,14 @@ export const useItem = (url: string) => {
     return item
 }
 
+export const urlObject = async (url: string) => {
+    const res = await fetch(url, {
+        method: 'GET'
+    })
+    const object = await res.json()
+    return object.name
+}
+
 export const sortAlphabetically = async (list: string[]) => {
     const urlObjects = await Promise.all(
         list.map(async url => {
