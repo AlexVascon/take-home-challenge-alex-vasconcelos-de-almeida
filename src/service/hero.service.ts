@@ -79,6 +79,22 @@ export const urlObject = async (url: string) => {
     return object.name
 }
 
+export const sortedList = async (list: string[]) => {
+    const urlObjects = await Promise.all(
+        list.map(async url => {
+            const res = await fetch(url, {
+                method: 'GET'
+            })
+         return await res.json()
+         })
+    )
+    const filteredNull = urlObjects.filter(obj => obj.name !== '')
+    filteredNull.sort((a,b) => {
+        return a.name.localeCompare(b.name)
+    })
+    return filteredNull
+}
+
 export const sortAlphabetically = async (list: string[]) => {
     const urlObjects = await Promise.all(
         list.map(async url => {
