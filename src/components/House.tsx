@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { House, sortAlphabetically, urlObject } from '../service/hero.service'
 import { PageProps } from './Page'
 import RefList from './RefList'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export const HousePage: FC<PageProps & {house: House}> = ({ house, selectActive }) => {
     const [currentLord, setCurrentLord] = useState<string>('')

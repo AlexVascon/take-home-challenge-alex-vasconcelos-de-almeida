@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { Book, sortAlphabetically, sortedList } from '../service/hero.service'
 import { PageProps } from './Page'
 import RefList from './RefList'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export const BookPage: FC<PageProps & {book: Book}> = ({ book, selectActive }) => {
     const [characters, setCharacters] = useState<any[]>([])
@@ -38,6 +39,7 @@ export const BookPage: FC<PageProps & {book: Book}> = ({ book, selectActive }) =
         </div>
         <button onClick={() => toggleMaleOnly()}>male</button>
         {characters && <RefList list={[...characters]} title="Characters" onClickItem={selectActive} />}
+        {characters.length === 0 && <CircularProgress />}
     </div>
 }
 
