@@ -35,6 +35,7 @@ export const CharacterPage: FC<PageProps & {character: Character}> = ({ characte
 
         <RefList list={[...character.books, ...character.povBooks]} title="Books" onClickItem={selectActive}/>
         <RefList list={[...character.allegiances]} title="Allegiances" onClickItem={selectActive}/>
+        {character.allegiances.length === 0 && <p>Lone wolf</p>}
     </div>
 }
 
