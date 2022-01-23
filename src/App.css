@@ -49,7 +49,7 @@
   border-collapse: separate;
   float: left;
   margin-top: 0.5rem;
-  margin-right: 80%; /* push text down */
+  margin-right: 100%; /* push text down */
 }
 
 .toggle {
