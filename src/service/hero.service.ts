@@ -55,8 +55,29 @@ export const fetchUtil = async (url: string): Promise<Book | Character | House> 
     const res = await fetch(url, {
         method: 'GET'
     })
+    const object = await res.json()
+    const entires = Object.entries(object)
+    const completeObject = await Promise.all(entires.map(async elm => {
+        const key = elm[0]
+        let value = elm[1] + ''
+        if(isUrlList(key)) return elm // we only want direct object properties. 
+        if(value.includes('https')) value = await fetchNameProp(value)
+        return [key, value]
+    }))
+    const obj = Object.fromEntries(completeObject)
+    obj.books = object.books
+    return obj
+}
 
-    return await res.json()
+const isUrlList = (key: string) => {
+    if(key === 'povBooks') return true
+    if(key === 'url') return true
+    if(key === 'books') return true
+    if(key === 'characters') return true
+    if(key === 'povCharacters') return true
+    if(key === 'allegiances') return true
+    if(key === 'swornMembers') return true
+    if(key === 'cadetBranches') return true
 }
 
 export const useItem = (url: string) => {
@@ -71,28 +92,29 @@ export const useItem = (url: string) => {
     return item
 }
 
-export const urlObject = async (url: string) => {
+export const fetchNameProp = async (url: string) => {
     const res = await fetch(url, {
         method: 'GET'
     })
-    const object = await res.json() // house or character
+    const object = await res.json()
     return object.name
 }
 
-export const sortedList = async (list: string[]) => {
-    const urlObjects = await Promise.all(
-        list.map(async url => {
-            const res = await fetch(url, {
-                method: 'GET'
-            })
-         return await res.json()
-         })
-    )
-    const filteredNull = urlObjects.filter(obj => obj.name !== '')
-    filteredNull.sort((a,b) => {
-        return a.name.localeCompare(b.name)
-    })
-    return filteredNull
+export const sortedList = async (list: string[]): Promise<Character[]> => {
+        const urlObjects = await Promise.all(
+            list.map(async url => {
+                const res = await fetch(url, {
+                    method: 'GET'
+                })
+             return await res.json()
+             })
+        )
+        const filteredNull = urlObjects.filter(obj => obj.name !== '')
+        filteredNull.sort((a,b) => {
+            return a.name.localeCompare(b.name)
+        })
+        return filteredNull
 }
+   
 
 
